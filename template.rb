@@ -40,10 +40,19 @@ def add_template_repository_to_source_path
 end
 
 def install_gems
+  add_solidus_auth_devise_if_missing
   add_solidus_starter_frontend_dependencies
   add_solidus_starter_frontend_spec_dependencies
 
   run_bundle
+end
+
+def add_solidus_auth_devise_if_missing
+  unless Bundler.locked_gems.dependencies['solidus_auth_devise']
+    bundle_command 'add solidus_auth_devise'
+    generate 'solidus:auth:install --skip_migrations=true'
+    say_status :skipping, "migrations (don't forget to run rake db:migrate)"
+  end
 end
 
 def add_solidus_starter_frontend_dependencies
