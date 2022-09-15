@@ -99,33 +99,27 @@ jobs:
 workflows:
   "Run specs on supported Solidus versions":
     jobs:
+      - run-specs
+
       - run-specs:
-          name: run-specs-with-postgres
-          database: 'postgres'
+          name: run-specs-but-with-solidus-latest
+          solidus_branch: 'master'
+
+      - run-specs:
+          name: run-specs-but-with-rails-6
+          rails_version: '~> 6.1'
+
+      - run-specs:
+          name: run-specs-but-with-ruby-3-0
+          ruby_version: '3.0'
+
+      - run-specs:
+          name: run-specs-but-with-ruby-2
           ruby_version: '2.7'
-          solidus_branch: 'v3.1'
-          rails_version: '~> 6.1'
 
       - run-specs:
-          name: run-specs-with-mysql
+          name: run-specs-but-with-mysql
           database: 'mysql'
-          ruby_version: '3.0'
-          solidus_branch: 'v3.1'
-          rails_version: '~> 6.1'
-
-      - run-specs:
-          name: run-specs-with-postgres-and-solidus-latest
-          database: 'postgres'
-          ruby_version: '3.0'
-          solidus_branch: 'master'
-          rails_version: '~> 7.0'
-
-      - run-specs:
-          name: run-specs-with-mysql-and-solidus-latest
-          database: 'mysql'
-          ruby_version: '3.1'
-          solidus_branch: 'master'
-          rails_version: '~> 7.0'
 
   "Weekly run specs against master":
     triggers:
@@ -136,30 +130,24 @@ workflows:
               only:
                 - master
     jobs:
+      - run-specs
+
       - run-specs:
-          name: run-specs-with-postgres
-          database: 'postgres'
+          name: run-specs-but-with-solidus-latest
+          solidus_branch: 'master'
+
+      - run-specs:
+          name: run-specs-but-with-rails-6
+          rails_version: '~> 6.1'
+
+      - run-specs:
+          name: run-specs-but-with-ruby-3-0
+          ruby_version: '3.0'
+
+      - run-specs:
+          name: run-specs-but-with-ruby-2
           ruby_version: '2.7'
-          solidus_branch: 'v3.1'
-          rails_version: '~> 6.1'
 
       - run-specs:
-          name: run-specs-with-mysql
+          name: run-specs-but-with-mysql
           database: 'mysql'
-          ruby_version: '3.0'
-          solidus_branch: 'v3.1'
-          rails_version: '~> 6.1'
-
-      - run-specs:
-          name: run-specs-with-postgres-and-solidus-latest
-          database: 'postgres'
-          ruby_version: '3.0'
-          solidus_branch: 'master'
-          rails_version: '~> 7.0'
-
-      - run-specs:
-          name: run-specs-with-mysql-and-solidus-latest
-          database: 'mysql'
-          ruby_version: '3.1'
-          solidus_branch: 'master'
-          rails_version: '~> 7.0'
