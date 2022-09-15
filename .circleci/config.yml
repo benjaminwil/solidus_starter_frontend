@@ -71,55 +71,70 @@ commands:
           when: always
 
 jobs:
-  run-specs-with-postgres:
+  run-specs:
+    executor:
+        name: solidusio_extensions/postgres
+        ruby_version: '3.1'
+    steps:
+      - setup
+      - test-branch:
+          branch: v3.2
+          rails_version: '~> 7.0'
+      - solidusio_extensions/store-test-results
+
+  run-specs-but-with-mysql:
+    executor:
+        name: solidusio_extensions/mysql
+        ruby_version: '3.1'
+    steps:
+      - setup
+      - test-branch:
+          branch: v3.2
+          rails_version: '~> 7.0'
+      - solidusio_extensions/store-test-results
+
+  run-specs-but-with-solidus-latest:
+    executor:
+        name: solidusio_extensions/postgres
+        ruby_version: '3.1'
+    steps:
+      - setup
+      - test-branch:
+          branch: master
+          rails_version: '~> 7.0'
+      - solidusio_extensions/store-test-results
+
+  run-specs-but-with-ruby-3-0:
+    executor:
+        name: solidusio_extensions/postgres
+        ruby_version: '3.0'
+    steps:
+      - setup
+      - test-branch:
+          branch: v3.2
+          rails_version: '~> 7.0'
+      - solidusio_extensions/store-test-results
+
+  run-specs-but-with-ruby-2-7:
     executor:
         name: solidusio_extensions/postgres
         ruby_version: '2.7'
     steps:
       - setup
       - test-branch:
-          branch: v3.1
-          rails_version: "~> 6.1"
-      - solidusio_extensions/store-test-results
-  run-specs-with-mysql:
-    executor:
-        name: solidusio_extensions/mysql
-        ruby_version: '3.0'
-    steps:
-      - setup
-      - test-branch:
-          branch: v3.1
-          rails_version: "~> 6.1"
-      - solidusio_extensions/store-test-results
-  run-specs-with-postgres-and-solidus-latest:
-    executor:
-        name: solidusio_extensions/postgres
-        ruby_version: '3.0'
-    steps:
-      - setup
-      - test-branch:
-          branch: master
-          rails_version: "~> 7.0"
-      - solidusio_extensions/store-test-results
-  run-specs-with-mysql-and-solidus-latest:
-    executor:
-        name: solidusio_extensions/mysql
-        ruby_version: '3.1'
-
-    steps:
-      - setup
-      - test-branch:
-          branch: master
-          rails_version: "~> 7.0"
+          branch: v3.2
+          rails_version: '~> 7.0'
       - solidusio_extensions/store-test-results
 
 workflows:
   "Run specs on supported Solidus versions":
     jobs:
-      - run-specs-with-postgres
-      - run-specs-with-mysql
-      - run-specs-with-postgres-and-solidus-latest
-      - run-specs-with-mysql-and-solidus-latest
+      - run-specs
+      - run-specs-but-with-mysql
+      - run-specs-but-with-solidus-latest
+      - run-specs-but-with-ruby-3-0
+      - run-specs-but-with-ruby-2-7
+
   "Weekly run specs against master":
     triggers:
       - schedule:
@@ -129,7 +144,8 @@ workflows:
               only:
                 - master
     jobs:
-      - run-specs-with-postgres
-      - run-specs-with-mysql
-      - run-specs-with-postgres-and-solidus-latest
-      - run-specs-with-mysql-and-solidus-latest
+      - run-specs
+      - run-specs-but-with-mysql
+      - run-specs-but-with-solidus-latest
+      - run-specs-but-with-ruby-3-0
+      - run-specs-but-with-ruby-2-7
