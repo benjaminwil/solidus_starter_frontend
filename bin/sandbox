@@ -76,6 +76,8 @@ gem 'solidus_auth_devise'
 gem 'net-smtp', require: false
 gem 'net-imap', require: false
 gem 'net-pop', require: false
+
+gem 'psych', '< 4.0'
 RUBY
 
 replace_in_database_yml() {
