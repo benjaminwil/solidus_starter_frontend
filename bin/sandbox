@@ -68,7 +68,6 @@ gem 'solidus_sample', github: solidus_repo, branch: solidus_branch
 gem 'solidus_i18n', github: solidus_i18n_repo, branch: solidus_i18n_branch
 
 gem 'rails-i18n'
-gem 'solidus_auth_devise'
 RUBY
 
 replace_in_database_yml() {
@@ -111,8 +110,6 @@ bundle exec rails generate solidus:install \
   --payment-method=none \
   --frontend=none \
   "$@"
-
-bundle exec rails generate solidus:auth:install --auto-run-migrations
 
 LOCATION='../template.rb' bundle exec rails app:template
 
